@@ -1,3 +1,0 @@
-class CausesController < ApplicationController
-  
-end

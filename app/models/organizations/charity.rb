@@ -1,0 +1,3 @@
+class Charity < Organization
+
+end

@@ -1,4 +1,7 @@
-class Charity < ActiveRecord::Base
+class Organization < ActiveRecord::Base
+
+  # all organizations are stored in the organizations table
+  self.table_name = 'organizations'
 
   has_and_belongs_to_many :keywords
 
@@ -15,4 +18,5 @@ class Charity < ActiveRecord::Base
 
   # -------------------------
   validates :ein, uniqueness: true, presence: true
+
 end

@@ -1,5 +1,3 @@
-class Cause < ActiveRecord::Base
+class Cause < Keyword
 
-  validates :cn_id, uniqueness: true
-  
 end
