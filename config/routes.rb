@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
 
-  resources :organizations,  only: [ :query, :read ]
+  resources :organizations
   resources :keywords
 
 end
