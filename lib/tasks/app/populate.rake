@@ -64,4 +64,54 @@ namespace :app do
 
   end
 
+  desc 'Associate causes to categories'
+  task causes_categories: :environment do
+
+    Cause.all.each do |cause|
+      category_id = cause.cn_category_id
+      category = Category.find_by( cn_category_id: category_id )
+      unless category.nil?
+        category.causes << cause
+        "#{category.name} associated to #{ cause.name }"
+      end
+    end
+
+  end
+
+  desc 'Parse category descriptions'
+  task cause_descriptions: :environment do
+
+    base_url = "http://access.alchemyapi.com/calls/text/TextGetRankedConcepts"
+
+    Cause.all.each do |cause|
+
+      #Add the API key and set the output mode to JSON
+      options = {}
+      options['apikey'] = ENV['ALCHEMY_API_KEY']
+      options['outputMode'] = 'json'
+      options['maxRetrieve'] = '20'
+      options['text'] = 'Performing Arts groups include symphonies, orchestras, and other musical groups; ballets and operas; theater groups; arts festivals; and performance halls and cultural centers'
+      # URI.encode(cause.cn_description)
+
+      uri = URI.parse(base_url)
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data( options)
+
+      # disable gzip encoding which blows up in Zlib due to Ruby 2.0 bug
+      # otherwise you'll get Zlib::BufError: buffer error
+      request['Accept-Encoding'] = 'identity'
+
+      #Fire off the HTTP request
+      res = Net::HTTP.start(uri.host, uri.port) do |http|
+        http.request(request)
+      end
+      response = JSON.parse( res.body )
+      if response.status == 'ok' && response['concepts'].present?
+        cate
+      end
+
+    end
+
+  end
+
 end
