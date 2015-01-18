@@ -1,3 +1,0 @@
-class Cause < Keyword
-
-end
