@@ -3,8 +3,7 @@ class Cause < Keyword
   #----------------------------------------------------------------------
   # associations
 
-  belongs_to :category, foreign_key: :child_id
-
-  # validations
+  has_and_belongs_to_many :categories, 
+                          join_table: 'categories_causes'
 
 end

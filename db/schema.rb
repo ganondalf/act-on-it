@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150113043302) do
+ActiveRecord::Schema.define(version: 20150118224209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "categories_causes", id: false, force: true do |t|
+    t.integer "category_id"
+    t.integer "cause_id"
+  end
+
+  add_index "categories_causes", ["category_id"], name: "index_categories_causes_on_category_id", using: :btree
+  add_index "categories_causes", ["cause_id"], name: "index_categories_causes_on_cause_id", using: :btree
 
   create_table "keywords", force: true do |t|
     t.string  "name"
@@ -24,8 +32,6 @@ ActiveRecord::Schema.define(version: 20150113043302) do
     t.integer "cn_id"
     t.text    "cn_description"
     t.string  "type"
-    t.integer "parent_id"
-    t.integer "child_id"
   end
 
   create_table "keywords_organizations", id: false, force: true do |t|
