@@ -38,7 +38,7 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'ranked-model'
+gem 'fast-stemmer'
 gem 'httparty'
 
 group :test, :development do
