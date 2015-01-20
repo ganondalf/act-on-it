@@ -69,10 +69,10 @@ namespace :app do
 
     Cause.all.each do |cause|
       category_id = cause.cn_category_id
-      category = Category.find_by( cn_category_id: category_id )
-      unless category.nil?
+      categories = Category.where( cn_category_id: category_id )
+      categories.each do |category|
         category.causes << cause
-        "#{category.name} associated to #{ cause.name }"
+        puts "#{category.name} associated to #{ cause.name }"
       end
     end
 
@@ -90,8 +90,7 @@ namespace :app do
       options['apikey'] = ENV['ALCHEMY_API_KEY']
       options['outputMode'] = 'json'
       options['maxRetrieve'] = '20'
-      options['text'] = 'Performing Arts groups include symphonies, orchestras, and other musical groups; ballets and operas; theater groups; arts festivals; and performance halls and cultural centers'
-      # URI.encode(cause.cn_description)
+      options['text'] = cause.cn_description
 
       uri = URI.parse(base_url)
       request = Net::HTTP::Post.new(uri.request_uri)
