@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150118224209) do
+ActiveRecord::Schema.define(version: 20150119154037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 20150118224209) do
     t.integer "cause_id"
   end
 
-  add_index "categories_causes", ["category_id"], name: "index_categories_causes_on_category_id", using: :btree
-  add_index "categories_causes", ["cause_id"], name: "index_categories_causes_on_cause_id", using: :btree
+  add_index "categories_causes", ["category_id", "cause_id"], name: "by_category_and_cause", unique: true, using: :btree
+  add_index "categories_causes", ["cause_id", "category_id"], name: "by_cause_and_category", unique: true, using: :btree
 
   create_table "keywords", force: true do |t|
     t.string  "name"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150118224209) do
     t.integer "cn_id"
     t.text    "cn_description"
     t.string  "type"
+    t.string  "stem"
   end
 
   create_table "keywords_organizations", id: false, force: true do |t|

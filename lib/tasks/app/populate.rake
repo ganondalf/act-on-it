@@ -105,10 +105,27 @@ namespace :app do
       res = Net::HTTP.start(uri.host, uri.port) do |http|
         http.request(request)
       end
+
       response = JSON.parse( res.body )
-      if response.status == 'ok' && response['concepts'].present?
-        cate
+
+      if response['status'].downcase == 'ok' && response['concepts'].present?
+
+        response['concepts'].each do |concept|
+          new_cause_name = concept['text'].downcase
+          categories = cause.categories
+
+          categories.each do |category|
+            new_cause = Cause.find_or_create_by( name: new_cause_name )
+            binding.pry
+            category.causes << new_cause
+            puts "#{category.name} associated to #{ new_cause.name }"
+          end
+        end
+
+      else 
+        puts 'no response from alchemy'
       end
+      
 
     end
 
